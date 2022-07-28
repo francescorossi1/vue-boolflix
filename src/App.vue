@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MainHeader @text-searched="searchMovies"/>
+    <MainHeader @forwarded-text="searchMovies"/>
     <div id="movies-list">
       <ul v-for="result in results" :key="result.id">
         <li><strong>Titolo: </strong>{{result.title}}</li>

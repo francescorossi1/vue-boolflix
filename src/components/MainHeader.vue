@@ -1,20 +1,24 @@
 <template>
   <header>
-    <div id="search-bar">
-      <input type="text" placeholder="Inserisci i termini di ricerca" v-model="text" @keyup.enter="$emit('text-searched', text)">
-      <button @click="$emit('text-searched', text)">Cerca!</button>
-    </div>
+    <SearchBar @text-searched="forwardText"/>
   </header>
 </template>
 
 <script>
+import SearchBar from './SearchBar.vue'
 export default {
-    name: 'MainHeader',
-    data(){
+    name: "MainHeader",
+    data() {
         return {
             text: ''
+        };
+    },methods: {
+        forwardText(value){
+            this.text = value
+            this.$emit('forwarded-text', this.text)
         }
-    }
+    },
+    components: { SearchBar }
 }
 </script>
 
