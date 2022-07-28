@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MainHeader @forwarded-text="searchMovies"/>
-    <MainSection :results-array="results"/>
+    <MainHeader @forwarded-text="searchResults"/>
+    <MainSection :movies-array="movies" :series-array="series"/>
   </div>
 </template>
 
@@ -22,25 +22,39 @@ export default {
       searchText: '',
       baseUri: 'https://api.themoviedb.org/3',
       apiKey: '8879e538b99f81d0c88c4cdd01f5dc49',
-      results: []
+      movies: [],
+      series: []
     }
   }, computed: {
-    
+
   },
   methods: {
     setSearchText(value){
       this.searchText = value
     },
-    searchMovies(value) {
-      this.setSearchText(value)
-      if (!this.searchText) return
+    searchMovies() {
       axios.get(`${this.baseUri}/search/movie/?api_key=${this.apiKey}&language=it&query=${this.searchText}`)
         .then((res) => {
-          this.results = res.data.results.map((result)=>{
+          return this.movies = res.data.results.map((result)=>{
             const {id, title, original_title, original_language, vote_average} = result
             return {id, title, original_title, original_language, vote_average}
           })
         })
+    },
+    searchSeries() {
+      axios.get(`${this.baseUri}/search/tv/?api_key=${this.apiKey}&language=it&query=${this.searchText}`)
+        .then((res) => {
+          return this.series = res.data.results.map((result)=>{
+            const {id, name, original_name, original_language, vote_average} = result
+            return {id, name, original_name, original_language, vote_average}
+          })
+        })
+    },
+    searchResults(value){
+      this.setSearchText(value)
+      if (!this.searchText) return
+        this.searchMovies();
+        this.searchSeries()
     }
   }
 }
