@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div id="search-bar">
-      <input type="text" placeholder="Inserisci i termini di ricerca" v-model="searchText" @keyup.enter="searchMovies">
-      <button @click="searchMovies">Cerca!</button>
-    </div>
+    <MainHeader @text-searched="searchMovies"/>
     <div id="movies-list">
       <ul v-for="result in results" :key="result.id">
         <li><strong>Titolo: </strong>{{result.title}}</li>
@@ -17,14 +14,14 @@
 
 <script>
 import axios from 'axios'
-
+import MainHeader from './components/MainHeader.vue'
 
 
 export default {
   name: 'App',
   components: {
-
-  },
+    MainHeader
+},
   data() {
     return {
       searchText: '',
@@ -36,7 +33,11 @@ export default {
     
   },
   methods: {
-    searchMovies() {
+    setSearchText(value){
+      this.searchText = value
+    },
+    searchMovies(value) {
+      this.setSearchText(value)
       if (!this.searchText) return
       axios.get(`${this.baseUri}/search/movie/?api_key=${this.apiKey}&language=it&query=${this.searchText}`)
         .then((res) => {
