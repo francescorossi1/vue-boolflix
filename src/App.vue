@@ -1,26 +1,21 @@
 <template>
   <div>
     <MainHeader @forwarded-text="searchMovies"/>
-    <div id="movies-list">
-      <ul v-for="result in results" :key="result.id">
-        <li><strong>Titolo: </strong>{{result.title}}</li>
-        <li><strong>Titolo Originale: </strong>{{result.original_title}}</li>
-        <li><strong>Lingua Originale: </strong>{{result.original_language}}</li>
-        <li><strong>Voto: </strong>{{result.vote_average}}</li>
-      </ul>
-    </div>
+    <MainSection :results-array="results"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MainHeader from './components/MainHeader.vue'
+import MainSection from './components/MainSection.vue'
 
 
 export default {
   name: 'App',
   components: {
-    MainHeader
+    MainHeader,
+    MainSection
 },
   data() {
     return {
