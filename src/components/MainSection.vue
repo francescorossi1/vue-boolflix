@@ -3,6 +3,7 @@
     <div id="movies-list" v-if="moviesArray">
       <h3>Movies:</h3>
       <ul v-for="movie in moviesArray" :key="movie.id">
+        <li><img :src="posterSrc.baseUri + posterSrc.size + movie.poster_path" :alt="movie.title"></li>
         <li><strong>Titolo: </strong>{{ movie.title }}</li>
         <li><strong>Titolo Originale: </strong>{{ movie.original_title }}</li>
         <li>
@@ -17,6 +18,7 @@
     <div id="series-list" v-if="seriesArray">
       <h3>Series:</h3>
       <ul v-for="series in seriesArray" :key="series.id">
+        <li><img :src="posterSrc.baseUri + posterSrc.size + series.poster_path" :alt="series.title"></li>
         <li><strong>Titolo: </strong>{{ series.name }}</li>
         <li><strong>Titolo Originale: </strong>{{ series.original_name }}</li>
         <li>
@@ -37,7 +39,8 @@ export default {
   props: { moviesArray: Array, seriesArray: Array },
   data() {
     return {
-      flags: ['it', 'en']
+      flags: ['it', 'en'],
+      posterSrc: { baseUri: 'https://image.tmdb.org/t/p/', size: 'w342/' }
     }
   }
 }
