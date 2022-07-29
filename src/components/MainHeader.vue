@@ -1,7 +1,7 @@
 <template>
-  <header>
-    <SearchBar @text-searched="forwardText"/>
-  </header>
+    <header>
+        <SearchBar @text-searched="forwardText" />
+    </header>
 </template>
 
 <script>
@@ -12,8 +12,8 @@ export default {
         return {
             text: ''
         };
-    },methods: {
-        forwardText(value){
+    }, methods: {
+        forwardText(value) {
             this.text = value
             this.$emit('forwarded-text', this.text)
         }

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MainHeader @forwarded-text="searchResults"/>
-    <MainSection :movies-array="movies" :series-array="series"/>
+    <MainHeader @forwarded-text="getResults" />
+    <MainSection :movies-array="movies" :series-array="series" />
   </div>
 </template>
 
@@ -16,12 +16,15 @@ export default {
   components: {
     MainHeader,
     MainSection
-},
+  },
   data() {
     return {
       searchText: '',
-      baseUri: 'https://api.themoviedb.org/3',
-      apiKey: '8879e538b99f81d0c88c4cdd01f5dc49',
+      api: {
+        baseUri: 'https://api.themoviedb.org/3',
+        apiKey: '8879e538b99f81d0c88c4cdd01f5dc49',
+        language: 'it-IT'
+      },
       movies: [],
       series: []
     }
@@ -29,32 +32,30 @@ export default {
 
   },
   methods: {
-    setSearchText(value){
+    setSearchText(value) {
       this.searchText = value
     },
-    searchMovies() {
-      axios.get(`${this.baseUri}/search/movie/?api_key=${this.apiKey}&language=it&query=${this.searchText}`)
+    searchResults(endpoint, array) {
+
+      const { baseUri, apiKey, language } = this.api
+
+      const config = {
+        params: {
+          api_key: apiKey,
+          language,
+          query: this.searchText,
+        }
+      }
+      axios.get(`${baseUri}${endpoint}`, config)
         .then((res) => {
-          return this.movies = res.data.results.map((result)=>{
-            const {id, title, original_title, original_language, vote_average} = result
-            return {id, title, original_title, original_language, vote_average}
-          })
+          this[array] = res.data.results
         })
     },
-    searchSeries() {
-      axios.get(`${this.baseUri}/search/tv/?api_key=${this.apiKey}&language=it&query=${this.searchText}`)
-        .then((res) => {
-          return this.series = res.data.results.map((result)=>{
-            const {id, name, original_name, original_language, vote_average} = result
-            return {id, name, original_name, original_language, vote_average}
-          })
-        })
-    },
-    searchResults(value){
+    getResults(value) {
       this.setSearchText(value)
       if (!this.searchText) return
-        this.searchMovies();
-        this.searchSeries()
+      this.searchResults('/search/movie', 'movies');
+      this.searchResults('/search/tv', 'series')
     }
   }
 }
