@@ -13,16 +13,25 @@
                 :src="require('../assets/img/' + product.original_language + '.png')" :alt="product.original_language">
             <span v-else>{{ product.original_language }}</span>
         </li>
-        <li><strong>Voto: </strong>{{ roundRating }}</li>
+        <li>
+            <strong>Voto: </strong>
+            <span><i v-for="num in getStars" :key="num" class="fa-solid fa-star"></i></span>
+            <span><i v-for="num in 5 - getStars" :key="num" class="fa-regular fa-star"></i></span>
+        </li>
     </ul>
 </template>
 
 <script>
 export default {
-    name: 'ProductCard',
+    name: "ProductCard",
     props: { product: Object, posterSrc: Object, flags: Array },
+    data() {
+        return {
+            stars: []
+        };
+    },
     computed: {
-        roundRating() {
+        getStars() {
             return Math.ceil(this.product.vote_average / 2);
         }
     },
