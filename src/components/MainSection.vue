@@ -1,57 +1,32 @@
 <template>
   <div>
-    <div id="movies-list" v-if="moviesArray">
-      <h3>Movies:</h3>
-      <ul v-for="movie in moviesArray" :key="movie.id">
-        <li>
-          <img v-if="movie.poster_path != null" :src="posterSrc.baseUri + posterSrc.size + movie.poster_path"
-            :alt="movie.title">
-          <img v-else src="../assets/img/no-poster.jpg" alt="no poster">
-        </li>
-        <li><strong>Titolo: </strong>{{ movie.title }}</li>
-        <li><strong>Titolo Originale: </strong>{{ movie.original_title }}</li>
-        <li>
-          <strong>Lingua Originale: </strong>
-          <img v-if="flags.includes(movie.original_language)"
-            :src="require('../assets/img/' + movie.original_language + '.png')" :alt="movie.original_language">
-          <span v-else>{{ movie.original_language }}</span>
-        </li>
-        <li><strong>Voto: </strong>{{ movie.vote_average }}</li>
-      </ul>
+    <div v-if="moviesArray.length">
+      <h3>Movies</h3>
+      <ProductCard v-for="movie in moviesArray" :key="movie.title" :product="movie" :posterSrc="posterSrc"
+        :flags="flags" />
     </div>
-    <div id="series-list" v-if="seriesArray">
-      <h3>Series:</h3>
-      <ul v-for="series in seriesArray" :key="series.id">
-        <li>
-          <img v-if="series.poster_path != null" :src="posterSrc.baseUri + posterSrc.size + series.poster_path"
-            :alt="series.title">
-          <img v-else src="../assets/img/no-poster.jpg" alt="no poster">
-        </li>
-        <li><strong>Titolo: </strong>{{ series.name }}</li>
-        <li><strong>Titolo Originale: </strong>{{ series.original_name }}</li>
-        <li>
-          <strong>Lingua Originale: </strong>
-          <img v-if="flags.includes(series.original_language)"
-            :src="require('../assets/img/' + series.original_language + '.png')" :alt="series.original_language">
-          <span v-else>{{ series.original_language }}</span>
-        </li>
-        <li><strong>Voto: </strong>{{ series.vote_average }}</li>
-      </ul>
+    <div v-if="seriesArray.length">
+      <h3>Series</h3>
+      <ProductCard v-for="series in seriesArray" :key="series.title" :product="series" :posterSrc="posterSrc"
+        :flags="flags" />
     </div>
   </div>
 </template>
 
 <script>
+import ProductCard from './ProductCard.vue';
 export default {
-  name: 'MainSection',
+  name: "MainSection",
   props: { moviesArray: Array, seriesArray: Array },
   data() {
     return {
-      flags: ['it', 'en'],
-      posterSrc: { baseUri: 'https://image.tmdb.org/t/p/', size: 'w342/' }
+      flags: ["it", "en"],
+      posterSrc: { baseUri: "https://image.tmdb.org/t/p/", size: "w342/" },
     }
   },
+  components: { ProductCard }
 }
+
 </script>
 
 <style>
