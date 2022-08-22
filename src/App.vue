@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MainHeader @forwarded-text="getResults" />
+    <MainHeader @text-searched="getItems" />
     <ItemsSection :items-array="movies" id="Movies" />
     <ItemsSection :items-array="series" id="Series" />
   </div>
@@ -36,7 +36,7 @@ export default {
     setSearchText(value) {
       this.searchText = value
     },
-    searchResults(endpoint, array) {
+    searchItems(endpoint, array) {
 
       const { baseUri, apiKey, language } = this.api
 
@@ -52,11 +52,11 @@ export default {
           this[array] = res.data.results
         })
     },
-    getResults(value) {
+    getItems(value) {
       this.setSearchText(value)
       if (!this.searchText) return
-      this.searchResults('/search/movie', 'movies');
-      this.searchResults('/search/tv', 'series')
+      this.searchItems('/search/movie', 'movies');
+      this.searchItems('/search/tv', 'series')
     }
   }
 }

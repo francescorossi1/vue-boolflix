@@ -2,7 +2,7 @@
     <header class="navbar bg-black">
         <div class="container d-flex justify-content-between">
             <h1 class="text-danger">Boolflix</h1>
-            <SearchBar @text-searched="forwardText" />
+            <SearchBar @text-searched="textSearched" />
         </div>
     </header>
 </template>
@@ -16,9 +16,9 @@ export default {
             text: ''
         };
     }, methods: {
-        forwardText(value) {
+        textSearched(value) {
             this.text = value
-            this.$emit('forwarded-text', this.text)
+            this.$emit('text-searched', this.text)
         }
     },
     components: { SearchBar }
