@@ -3,7 +3,7 @@
     <div v-if="itemsArray.length" class="container">
       <h3 class="pt-5">{{ id }}</h3>
       <div class="row pb-5">
-        <ProductCard v-for="item in itemsArray" :key="item.title" :product="item" :flags="flags" class="col-2" />
+        <ProductCard v-for="item in itemsArray" :key="item.title" :product="item" :flags="flags" class="col-2 p-2" />
       </div>
     </div>
   </div>
