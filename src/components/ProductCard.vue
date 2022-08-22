@@ -1,7 +1,6 @@
 <template>
     <div class="card p-2 border-0">
-        <img v-if="product.poster_path != null" :src="posterSrc.baseUri + posterSrc.size + product.poster_path"
-            :alt="product.title" class="img-fluid rounded-1">
+        <img v-if="product.poster_path != null" :src="getPoster" :alt="product.title" class="img-fluid rounded-1">
         <img v-else src="../assets/img/no-poster.jpg" alt="no poster">
         <div class="card card-hover">
             <ul class="card-body">
@@ -16,8 +15,8 @@
                 </li>
                 <li>
                     <strong>Voto: </strong>
-                    <span><i v-for="num in getStars" :key="num" class="fa-solid fa-star text-warning"></i></span>
-                    <span><i v-for="num in 5 - getStars" :key="num" class="fa-regular fa-star text-warning"></i></span>
+                    <span><i v-for="num in 5" :key="num" class="fa-star text-warning"
+                            :class="num <= getFullStars ? 'fa-solid' : 'fa-regular'"></i></span>
                 </li>
             </ul>
         </div>
@@ -25,16 +24,15 @@
 </template>
 
 <script>
+const posterSrc = "https://image.tmdb.org/t/p/w342";
 export default {
     name: "ProductCard",
-    props: { product: Object, posterSrc: Object, flags: Array },
-    data() {
-        return {
-            stars: []
-        };
-    },
+    props: { product: Object, flags: Array },
     computed: {
-        getStars() {
+        getPoster() {
+            return posterSrc + this.product.poster_path
+        },
+        getFullStars() {
             return Math.ceil(this.product.vote_average / 2);
         }
     },

@@ -1,21 +1,22 @@
 <template>
   <div>
     <MainHeader @forwarded-text="getResults" />
-    <MainSection :movies-array="movies" :series-array="series" />
+    <ItemsSection :items-array="movies" id="Movies" />
+    <ItemsSection :items-array="series" id="Series" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MainHeader from './components/MainHeader.vue'
-import MainSection from './components/MainSection.vue'
+import ItemsSection from './components/ItemsSection.vue'
 
 
 export default {
   name: 'App',
   components: {
     MainHeader,
-    MainSection
+    ItemsSection,
   },
   data() {
     return {
