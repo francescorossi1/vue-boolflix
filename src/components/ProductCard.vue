@@ -4,7 +4,7 @@
             <img v-if="product.poster_path != null" :src="getPoster" :alt="product.title || product.name"
                 class="img-fluid rounded-2">
             <img v-else src="../assets/img/no-poster.jpg" alt="no poster" class="rounded-2">
-            <div class="card card-hover" @mouseenter="searchCast(query)" @mouseleave="names = []">
+            <div class="card card-hover" @mouseenter="getInfo(query)" @mouseleave="names = []; genres = []">
                 <ul class="p-1">
                     <li><strong>Titolo: </strong>{{ product.title || product.name }}</li>
                     <li><strong>Titolo Originale: </strong>{{ product.original_title || product.original_name }}</li>
@@ -19,6 +19,12 @@
                         <strong>Cast: </strong>
                         <ul>
                             <li v-for="(name, i) in names" :key="i">{{ name }}</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Genres: </strong>
+                        <ul>
+                            <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
                         </ul>
                     </li>
                     <li>
@@ -40,7 +46,8 @@ export default {
     props: { product: Object, flags: Array, query: String },
     data() {
         return {
-            names: []
+            names: [],
+            genres: []
         }
     },
     computed: {
@@ -62,6 +69,21 @@ export default {
                     }
                     return this.names
                 })
+        },
+        searchGenre(query) {
+            axios.get(`https://api.themoviedb.org/3/${query}/${this.product.id}?api_key=8879e538b99f81d0c88c4cdd01f5dc49`)
+                .then((res) => {
+                    const genres = res.data.genres;
+                    genres.forEach(genre => {
+                        this.genres.push(genre.name)
+                    });
+                    return this.genres
+                    
+                })
+        },
+        getInfo(query) {
+            this.searchCast(query);
+            this.searchGenre(query)
         }
     }
 }
