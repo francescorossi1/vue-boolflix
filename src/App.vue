@@ -1,8 +1,8 @@
 <template>
   <div>
     <MainHeader @text-searched="getItems" />
-    <ItemsSection :items-array="movies" id="Movies" />
-    <ItemsSection :items-array="series" id="Series" />
+    <ItemsSection :items-array="movies" id="Movies" query="movie" />
+    <ItemsSection :items-array="series" id="Series" query="tv" />
   </div>
 </template>
 

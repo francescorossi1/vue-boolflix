@@ -1,9 +1,10 @@
 <template>
     <div>
         <div class="card border-0">
-            <img v-if="product.poster_path != null" :src="getPoster" :alt="product.title" class="img-fluid rounded-2">
+            <img v-if="product.poster_path != null" :src="getPoster" :alt="product.title || product.name"
+                class="img-fluid rounded-2">
             <img v-else src="../assets/img/no-poster.jpg" alt="no poster" class="rounded-2">
-            <div class="card card-hover">
+            <div class="card card-hover" @mouseenter="searchCast(query)" @mouseleave="names = []">
                 <ul class="p-1">
                     <li><strong>Titolo: </strong>{{ product.title || product.name }}</li>
                     <li><strong>Titolo Originale: </strong>{{ product.original_title || product.original_name }}</li>
@@ -13,6 +14,12 @@
                             :src="require('../assets/img/' + product.original_language + '.png')"
                             :alt="product.original_language" class="img-fluid w-25">
                         <span v-else>{{ product.original_language }}</span>
+                    </li>
+                    <li>
+                        <strong>Cast: </strong>
+                        <ul>
+                            <li v-for="(name, i) in names" :key="i">{{ name }}</li>
+                        </ul>
                     </li>
                     <li>
                         <strong>Voto: </strong>
@@ -26,18 +33,37 @@
 </template>
 
 <script>
+import axios from 'axios'
 const posterSrc = "https://image.tmdb.org/t/p/w342";
 export default {
     name: "ProductCard",
-    props: { product: Object, flags: Array },
+    props: { product: Object, flags: Array, query: String },
+    data() {
+        return {
+            names: []
+        }
+    },
     computed: {
         getPoster() {
             return posterSrc + this.product.poster_path
         },
         getFullStars() {
             return Math.ceil(this.product.vote_average / 2);
+        },
+    }, methods: {
+        searchCast(query) {
+            axios.get(`https://api.themoviedb.org/3/${query}/${this.product.id}/credits?api_key=8879e538b99f81d0c88c4cdd01f5dc49`)
+                .then((res) => {
+                    const actors = res.data.cast;
+                    let i = 0;
+                    while (i < 5 && i < actors.length) {
+                        this.names.push(actors[i].name)
+                        i++
+                    }
+                    return this.names
+                })
         }
-    },
+    }
 }
 </script>
 
