@@ -62,4 +62,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'bootstrap';
+
+ul {
+  padding: 0;
+
+  li {
+    list-style-type: none;
+  }
+}
 </style>
